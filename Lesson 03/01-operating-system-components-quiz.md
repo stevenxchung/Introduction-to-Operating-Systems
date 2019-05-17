@@ -1,4 +1,4 @@
-## Quiz 1: Operating Systems Components
+# Quiz 1: Operating Systems Components
 
 Which of the following are likely components of an operating system?
 
