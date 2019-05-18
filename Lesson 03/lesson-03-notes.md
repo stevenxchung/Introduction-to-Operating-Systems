@@ -46,4 +46,34 @@
 
 - Applications will need to utilize user-kernel transitions which is accomplished by hardware, this involves a number of instructions and switches locality
 - Switching locality will affect hardware cache (transitions are costly)
-- Hardware will set *traps* on illegal instructions or memory accesses requiring special privilege
+- Hardware will set _traps_ on illegal instructions or memory accesses requiring special privilege
+
+## Monolithic OS
+
+- Pros:
+  - Everything included
+  - Inlining, compile-time optimizations
+- Cons:
+  - Customization, portability, manageability
+  - Memory footprint
+  - Performance
+
+## Modular OS
+
+- Pros:
+  - Maintainability
+  - Smaller footprint
+  - Less resource needs
+- Cons:
+  - Indirection can impact performance
+  - Maintenance can still be an issue
+
+## Microkernel
+
+- Pros:
+  - Size
+  - Verifiability
+- Cons:
+  - Portability
+  - Complexity of software development
+  - Cost of user/kernel crossing
