@@ -8,7 +8,7 @@
 ## What is an Operating System?
 
 - An OS is a special piece of software that abstracts and arbitrates the use of a computer system
-- An OS is like a toy shop manager in that an OS:
+- An **OS** is like **a toy shop manager** in that an OS:
   - Directs operational resources
   - Enforces working policies
   - Mitigates difficulty of complex tasks
