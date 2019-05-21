@@ -36,3 +36,42 @@
 - Parts of virtual address space may not be allocated
 - May not be enough physical memory for all state
 - Solution: the operating system dynamically decides which portion of which address space will be present where in physical memory
+
+## Process Execution State
+
+- How does the OS know what a process is doing?
+  - The **program counter** allows the OS to know where a process currently is in the instruction sequence
+  - The program counter is maintained on a **CPU register** while the process is executing
+  - There also exists a **stack pointer** which points to the top of the stack (useful for LIFO operations)
+  - To maintain all of the above, the OS maintains a **PCB** (process control block)
+
+## Process Control Block
+
+- What is a PCB?
+  - A PCB (process control block) is a data structure that the OS maintains for every one of the processes that it manages
+  - A PCB is created when process is created
+- Certain fields are updated when process state changes
+- Other fields change too frequently
+
+## Context Switch
+
+- **Context switch** - switching the CPU from the context of one process to the context of another
+- Context switching is expensive!
+  - **Direct costs** - number of cycles for load to store instructions
+  - **Indirect costs** - COLD cache! Cache misses!
+  - Ultimately, we want to limit how frequently context switching is done!
+
+## Process Life Cycle: States
+
+- Processes can be **running** or **idle**
+- Process states can be: new, ready, running, waiting, or terminated
+
+## Process Life Cycle: Creation
+
+- Two mechanisms for process creation:
+  - **Fork**:
+    - Copies the parent PCB into new child PCB
+    - Child continues execution at instruction after fork
+  - **Exec**:
+    - Replace child image
+    - Load new program and start from first instruction
