@@ -75,3 +75,35 @@
   - **Exec**:
     - Replace child image
     - Load new program and start from first instruction
+
+## Role of the CPU Scheduler
+
+- A **CPU Scheduler** determines which one of the currently ready processes will be dispatched to the CPU to start running, and how long it should run for
+- In general, the OS must be efficient:
+  - **Preempt** - interrupt and save current context
+  - **Schedule** - run scheduler to choose next process
+  - **Dispatch** - dispatch process to switch into its context
+
+## Length of Process
+
+- Useful CPU work can be determined by the following: `total processing time / total time`
+- In general, total scheduling time should be considered overhead, we want most of the CPU time to be spent doing useful work
+- **Timeslice** - time allocated to a process on the CPU
+
+### Inter Process Communication
+
+- An OS must provide mechanisms to allow processes to interact with one another
+- **IPC mechanisms**:
+  - Help transfer data/info between address spaces
+  - Maintain protection and isolation
+  - Provide flexibility and performance
+- **Message-passing IPC**:
+  - OS provides communication channel liked shared buffer
+  - Processes write (send)/read (receive) messages to/from channel
+  - Pros: OS manages
+  - Cons: overheads
+- **Shared Memory IPC**:
+  - OS establishes a shared channel and maps it into each process address space
+  - Processes directly read/write from this memory
+  - Pros: OS is out of the way!
+  - Cons: may need to re-implement code
