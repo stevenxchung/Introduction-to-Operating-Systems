@@ -88,3 +88,120 @@
     - Notify one thread waiting on condition
   - **Broadcast (condition)**:
     - Notify all waiting threads
+
+## Common Pitfalls
+
+- Keep track of mutex/condition variables used with a resource:
+  - e.g., mutex*type \_m1*; // mutex for file1
+- Check that that you are always (and correctly) using lock and unlock:
+  - e.g., did you forget to lock/unlock? What about compilers?
+- Use a single mutex to access a single resource!
+  - We do not want reads and writes to happen concurrently!
+- Check that you are signaling correct condition
+- Check that you are not using signal when broadcast is needed:
+  - Signal - only one thread will proceed, remaining threads will continue to wait, possibly indefinitely!
+- Ask yourself: do you need priority guarantees?
+  - Thread execution order not controlled by signals to condition variables!
+- Other pitfalls include:
+  - Spurious wake-ups
+  - Deadlocks
+
+## Spurious Wake-ups
+
+- Spurious wake-ups occur when cycles are wasted via context switching threads to run on the CPU and then back again to wait on the wait queue
+- When you unlock a mutex after broadcast/signal, no other thread can get lock
+- Solution: broadcast/signal after mutex is unlocked, this only works in some cases however (write to file)
+
+## Deadlocks
+
+- Deadlocks occur when two or more competing threads are waiting on each other to complete but none of them ever do
+- Solution: a good general solution is to maintain lock order, e.g., first _m_a_ then _m_b_
+
+## Kernel vs User level Threads
+
+- Kernel level:
+  - Kernel level threads imply that the OS itself is multi-threaded
+  - Kernel threads are managed bny kernel level components like the kernel level scheduler (the OS scheduler will decide how kernel level threads will be mapped onto the physical CPUs and which one of the threads will execute)
+- User level:
+  - The processes are multi-threaded
+  - For a user level thread to execute it must be associated with a kernel level thread and the OS level scheduler must schedule that kernel level thread onto a CPU
+- What is the relationship between a kernel level thread and a user level thread?
+
+## Multi-threading models
+
+- **One-to-one model**:
+  - Pros:
+    - OS sees/understands threads, synchronization, blocking, etc.
+  - Cons:
+    - Must go to OS for all operations (may be expensive)
+    - OS may have limits on policies, thread number
+    - Portability
+- **Many-to-one model**:
+  - Pros:
+    - Totally portable, does not depend on OS limits and polices
+  - Cons:
+    - OS has no insights into application needs
+    - OS may block entire process if one user level thread blocks on I/O
+- **Many-to-many model**:
+  - Pros:
+    - Can be best of both worlds
+    - Can have bound or unbound threads
+  - Cons:
+    - Requires coordination between user and kernel level thread managers
+
+## Scope of Multi-threading
+
+- **Process scope**:
+  - User level library manages threads within a single process
+- **System scope**:
+  - System-wide thread management by OS level thread managers (e.g., CPU scheduler)
+
+## Multi-threading Patterns
+
+- **Boss-workers**:
+  - Boss: assigns work to workers
+  - Worker: performs entire tasks
+  - Scenario 1: boss assigns work by directly signaling specific worker
+    - Pros:
+      - Workers don't need to synchronize
+    - Cons:
+      - Boss must track what each worker is doing
+      - Throughput will do down!
+  - Scenario 2: boss assigns work in producer/consumer queue
+    - Pros:
+      - Boss does not need to know details about workers
+    - Cons:
+      - Queue synchronization
+  - Scenario 3: worker pool (static or dynamic)
+    - Pros:
+      - Simplicity
+    - Cons:
+      - Thread pool management
+      - Locality
+- **Boss-workers variants**:
+  - All workers created equal versus workers specialized for certain tasks
+  - Pros:
+    - Better locality
+    - Quality of service management
+  - Cons:
+    - Load balancing
+- **Pipeline pattern**:
+  - Threads assigned one subtask in the system
+  - Entire tasks are pipeline of threads
+  - Multiple tasks concurrently in the system, in different pipeline stages
+  - Throughput is the longest stage in the pipeline (weakest link) in the pipeline
+  - Pipeline stages can be managed via thread pool
+  - The best way to pass work is through a shared-buffer based communication between stages
+  - Pros:
+    - Specialization and locality
+  - Cons:
+    - Balancing and synchronization overheadss
+- **Layered pattern**:
+  - Each layer group of related subtasks
+  - End-to-end task must pass up and down through all layers
+  - Pros:
+    - Specialization
+    - Less fine-grained than pipeline
+  - Cons:
+    - Not suitable for all applications
+    - Synchronization
