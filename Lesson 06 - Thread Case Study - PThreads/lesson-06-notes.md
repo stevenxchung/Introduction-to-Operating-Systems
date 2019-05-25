@@ -42,3 +42,41 @@
 - Ensure to include the PThread header file, `pthread.h`, in your main file that contains the PThreads code, otherwise the program will not compile
 - Compile source with `-lpthread` or `-pthread`
 - Check the return values of common functions
+
+## PThread Mutexes
+
+- PThread mutexes were designed to solve mutual exclusion problems among concurrent threads
+- Below is a comparison of Birrell's mechanisms and PThreads for mutexes:
+
+| Birrell's Mechanisms      | PThreads                                   |
+| ------------------------- | ------------------------------------------ |
+| `Mutex`                   | `pthread_mutex_t` (mutex type)             |
+| `Lock()` (to lock)        | `pthread_mutex_lock()` (explicit lock)     |
+| `Lock()` (also to unlock) | `pthread_mutex_unlock()` (explicit unlock) |
+
+- **Mutex safety tips**:
+  - Shared data should always be accessed through a single mutex!
+  - Mutex scope must be visible to all!
+  - Globally order locks
+    - For all threads, lock mutexes in order
+  - Always unlock a mutex
+    - Always unlock the correct mutex
+
+## PThread Condition Variables
+
+- Below is a comparison of Birrell's mechanisms and PThreads for condition variables:
+
+| Birrell's Mechanisms           | PThreads                                 |
+| ------------------------------ | ---------------------------------------- |
+| `Condition`                    | `pthread_cond_t` (type of cond variable) |
+| `Wait()` (to lock)             | `pthread_cond_wait()`                    |
+| `Signal()` (also to unlock)    | `pthread_cond_signal()`                  |
+| `Broadcast()` (also to unlock) | `pthread_cond_broadcast()`               |
+
+- There are also other condition variables such as `pthread_cond_init()` and `pthread_cond_destroy()`
+- **Condition variable safety tips**:
+  - Do not forget to notify waiting threads!
+    - Predicate change => signal/broadcast correct condition variable
+  - When in doubt broadcast
+    - However, broadcast too often will result in **performance loss**
+  - You do not need a mutex to signal/broadcast (it may be necessary to wait until mutex is removed before signaling/broadcasting)
