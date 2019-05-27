@@ -113,3 +113,75 @@
     - Put on **death row**
     - Periodically destroyed by **reaper thread**
     - Otherwise thread structures/stacks are reused (performance gains!)
+
+## Interrupts vs Signals
+
+- **Interrupts**:
+  - Events generated externally by components other than the CPU (I/O devices, timers, other CPUs)
+  - Determined based on the physical platform
+  - Appear asynchronously
+- **Signals**:
+  - Events triggered by the CPU and software running on it
+  - Determined based on the operating system
+  - Appear synchronously or asynchronously
+- **Interrupts and Signals**:
+  - Have a unique ID depending on the hardware or OS
+  - Can be masked and disabled/suspended via corresponding mask
+    - Per-CPU interrupt mask, per-process signal mask
+  - If enabled, trigger corresponding handler
+    - Interrupt handler set for entire system by OS
+    - Signal handlers set on per process basis, by process
+
+## Interrupt Handling
+
+- Recall that interrupts are generated externally
+- When a device sends an interrupt to the CPU it is basically sending a signal through the interconnect that connects the device to the CPU complex
+- For most modern devices there is an MSI (message signal interrupter) message that can be carried on the same interconnect that connects the devices to the CPU complex
+- Based on the MSI message, the interrupt can be uniquely identified through a interrupt handler table
+
+## Signal Handling
+
+- Recall that signals are generated internally
+- If a thread decides to access illegal memory, a signal (`SIGSEGV`) will be generated from the OS
+- The OS maintains a signal handler table for every process in the system
+- A process may specify how a signal should be handled, this is because the OS actually specifies some default actions for handling signals
+- **Handlers/actions** (default actions):
+  - Terminate
+  - Ignore
+  - Terminate and core dump
+  - Stop or continue
+- **Synchronous**:
+  - `SIGSEGV` (access to protected memory)
+  - `SIGFPE` (divide by zero)
+  - `SIGKILL` (kill, id) can be directed to s specific thread
+- **Asynchronous**:
+  - `SIGKILL` (kill)
+  - `SIGALARM`
+
+## Why Disable Interrupts or Signals?
+
+- Problem:
+  - Interrupts and signals are handled on the thread stack which can cause handler code to deadlock
+- Solution:
+  - Control interruptions by handler code (user interrupt/signal masks)
+- A **mask** is a sequence of bits where each bit corresponds to a specific interrupt or signal and the value of the bit, zero or one, will indicate whether the specific interrupter signal is disabled or enabled
+
+## More on Masks
+
+- **Interrupt masks** are per CPU:
+  - If mask disables interrupt, hardware interrupt routing mechanism will not deliver interrupt to CPU
+- **Signal masks** are per execution context (ULT on top of KLT) if mask disables signal, kernel sees mask and will not interrupt corresponding thread
+
+## Interrupts on Multi-core systems
+
+- Interrupts can be directed to any CPU that has them enabled
+- May set interrupt on just a single core
+  - Avoids overheads and perturbations on all other cores
+
+## Types of Signals
+
+- **One-shot signals**:
+  - `n_signals_pending == one_signal_pending` at least once
+  - Must be explicitly re-enabled
+- **Real-time signals**:
+  - *If n signals raised, then handler is called n times*
