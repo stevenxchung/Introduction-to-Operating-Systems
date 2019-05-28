@@ -184,4 +184,53 @@
   - `n_signals_pending == one_signal_pending` at least once
   - Must be explicitly re-enabled
 - **Real-time signals**:
-  - *If n signals raised, then handler is called n times*
+  - _If n signals raised, then handler is called n times_
+
+## Interrupts as Threads
+
+- Problem:
+  - Deadlocks can happen for signal handling routines
+- Solution:
+  - As mentioned in the SunOS paper, we can allow interrupts to become full-fledged threads every time interrupts are performing blocking operations
+- However, dynamic thread creation is expensive!
+  - **Dynamic decision**:
+    - If handler doesn't lock, execute on interrupted thread's stack
+    - If handler can block, turn into real thread
+  - **Optimization**:
+    - Pre-create and pre-initialize thread structures for interrupt routines
+
+## Interrupts: Top vs Bottom Half
+
+- Interrupts as threads can be handled in two ways (see diagram from lecture):
+  - **Top half**:
+    - Fast, non-blocking
+    - Min amount of processing
+  - **Bottom half**:
+    - Arbitrary
+    - Complexity
+- Bottom line:
+  - To permit arbitrary functionality to be incorporated into the interrupt-handling operations, the handling routine must be executed by another thread where synchronization and blocking is a possibility
+
+## Performance of Threads as Interrupts
+
+- **Overall cost**:
+  - Overhead of 40 SPARC instructions per interupt
+  - Saving of 12 instructions per mutex
+    - No changes in interrupt mask, level, etc.
+  - Fewer interrupts than mutex lock/unlock operations
+- To summarize, optimize for the common case!
+
+## Task Structure in Linux
+
+- Main execution abstraction: task
+  - KLT
+- Single-threaded process: one task
+- Multi-threaded process: many tasks
+- **Task creation** - use `clone` command
+- **Linux threads model**:
+  - NPTL (Native POSIX Threads Library) - *one-to-one model*:
+    - Kernel sees each ULT info
+    - Kernel traps are cheaper
+    - More resources: memory, large range of IDs, etc.
+  - Order Linux Threads - *many-to-many model*:
+    - Similar issues to those described in Solaris papers
