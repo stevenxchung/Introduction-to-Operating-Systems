@@ -169,3 +169,95 @@
   - Cons:
     - Applicability to certain classes of applications
     - Event-driven routing on multi CPU systems
+
+## Flash Web Server
+
+- **Flash: event-driven web server**:
+  - An **event-driven web server (AMPED)** with **asymmetric helper processes**
+  - _Helpers_ used for disk reads
+  - Pipes used for communication with dispatcher
+  - Helper reads file in memory (via memory map)
+  - Dispatcher checks (via mincore) if pages are in memory to decide _local handler_ or _helper_
+- In general, a flash web server can offer possible big savings!
+- **Flash: additional optimizations**:
+  - Application-level caching (data and computation)
+  - Alignment for DMA (direct memory access)
+  - Use of DMA with scatter-gather, vector I/O operations
+- Back in the day these optimizations would be novel, now they are fairly common
+
+## Apache Web Server
+
+- An Apache web server (diagram available in lecture slides) consists of the following elements:
+  - **Core** - basic server skeleton
+  - **Modules** - per functionality
+  - **Flow of control** - similar to event-driven model
+- However, an Apache web server differs in:
+  - Combination of MP and MT:
+    - Each process is equivalent to boss/worker with dynamic thread pool
+    - Number of processes can also be dynamically adjusted
+
+## Experimental Methodology
+
+- To set up performance comparisons consider the following:
+  - First, define the comparison points:
+    - What systems are you comparing?
+  - Second, define inputs:
+    - What workloads will be used?
+  - Third, define metrics:
+    - How will you measure performance?
+
+## Summary of Performance Results
+
+- **When data is in cache**:
+  - SPED (single-process event-driven) >> AMPED Flash:
+    - Unnecessary test for memory presence
+  - SPED and AMPED Flash >> MT/MP:
+    - Sync and context switching overhead
+- **Disk-bound workload**:
+  - AMPED Flash >> SPED:
+    - Blocks because no async I/O
+  - AMPED Flash >> MT/MP:
+    - More memory efficient and less context switching
+
+## Advice on Designing Experiments
+
+- **Design relevant experiments**: statements about a solution that others believe in and care for
+- **Purpose of relevant experiments** (e.g., web server experiment):
+  - Clients: response time
+  - Operations: throughput
+  - **Possible goals**:
+    - Increase response time and throughput
+    - Increase response time
+    - Increase response time while decreasing throughput
+    - Maintains response time when request rate increases
+  - **Goals**: metrics and configuration of experiments
+- _Rule of thumb_ for picking **metrics**:
+  - Standard **metrics** equals broader audience
+  - **Metrics** answering the _"Who? What? Why?"_ questions:
+    - Client performance: response time, timed-out request, etc.
+    - Operator costs: throughput, costs, etc.
+- **Picking the right configuration space**:
+  - **System resources**:
+    - Hardware and software
+  - **Workload**:
+    - Web server: request rate, number of concurrent requests, file size, access pattern
+  - **Now pick!**:
+    - Choose a subset of configuration parameters
+    - Pick ranges for each variable factor
+    - Pick relevant workload
+    - Include the best/worst case scenarios
+- **Are you comparing apples to apples?**:
+  - Pick useful combination of factors, many just reiterate the same point
+- **What about the competition and baseline?**:
+  - Compare system to:
+    - State-of-the-art
+    - Most common practice
+    - Ideal best/worst case scenario
+
+## Advice on Running Experiments
+
+- If you have designed the experiments you should consider:
+  - Running test cases _n_ times
+  - Compute metrics
+  - Represent results
+- Additionally, do not forget about making conclusions!
