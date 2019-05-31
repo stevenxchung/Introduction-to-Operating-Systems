@@ -10,3 +10,9 @@ How is a process created? Select all that apply.
 - Via fork or fork followed by exec
 - None of the above
 - All of the above
+
+A: A process is created by the following:
+
+- Via fork, exact clone
+- Via fork followed by exec, not an exact clone
+- Via for or fork followed by exec
