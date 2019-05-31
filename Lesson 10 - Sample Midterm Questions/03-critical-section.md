@@ -15,11 +15,11 @@ cond_var_t not_empty, not_full;
 ```c
    while (more_to_produce) {
      mutex_lock(&m);
-     if (out == (in + 1) % BUFFERSIZE)) // buffer full
-        condition_wait(&not_full);
+     if (out == (in + 1) % BUFFERSIZE)) // buffer full, should use a while loop
+        condition_wait(&not_full); // I believe this needs a mutex input
    add_item(buffer[in]); // add item
      in = (in + 1) % BUFFERSIZE
-      cond_broadcast(&not_empty);
+      cond_broadcast(&not_empty); // Use signal instead
 
 } // end producer code
 ```
@@ -29,11 +29,11 @@ cond_var_t not_empty, not_full;
 ```c
    while (more_to_consume) {
    mutex_lock(&m);
-   if (out == in) // buffer empty
-     condition_wait(&not_empty);
+   if (out == in) // buffer empty, should use while loop
+     condition_wait(&not_empty); // Needs mutex input
    remove_item(out);
    out = (out + 1) % BUFFERSIZE;
-   condition_signal(&not_empty);
-
+   condition_signal(&not_empty); // Should be not_full
+   // Insert mutex unlock here!
 } // end consumer code
 ```
