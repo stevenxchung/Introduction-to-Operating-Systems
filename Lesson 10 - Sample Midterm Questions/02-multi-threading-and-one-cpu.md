@@ -1,4 +1,4 @@
-# Multi-threading and One CPU
+# Problem 2: Multi-threading and One CPU
 
 Is there a benefit of multi-threading on one CPU?
 
