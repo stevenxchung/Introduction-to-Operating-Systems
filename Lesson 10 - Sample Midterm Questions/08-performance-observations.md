@@ -6,3 +6,8 @@ For data sets **where the data set size is less than 100 MB** why does...
 
 1. Flash perform worse than SPED?
 2. Flash perform better than MP?
+
+A: The answers are as follows,
+
+1. Flash checks the cache where SPED does not.
+2. Flash uses cache where MP does not.
