@@ -12,7 +12,7 @@ You have been asked to build a multi-threaded implementation of this server usin
 2. What is the expected execution time for 100 requests (in sec)?
 3. What is the average throughput of the system in Question 2 (in req/sec)? Assume there are infinite processing resources (CPU's, memory, etc.).
 
-A: The answers are as follows:
+A: The answers are as follows,
 
 1. We need to vary the number of threads for each stage:
    1. Stage 1 needs one thread (1 \* 10 ms = 10 ms)
