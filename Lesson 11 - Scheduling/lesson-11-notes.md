@@ -49,3 +49,22 @@
 - Shortest job first (SJF):
   - Schedules tasks in order of their execution time
   - Run-queue is the same as ordered queue or tree
+
+## Preemptive Scheduling: SJF + Preempt
+
+- **SJF + Preemption**:
+  - *T2* arrives first
+  - *T2* should be preempted
+- **Heuristics based on history**: job running time
+- How long did a task run last time?
+- How long did a task run last *n* times?
+
+## Preemptive Scheduling: Priority
+
+- **Priority scheduling**:
+  - Tasks have different priority levels
+  - Run highest priority tasks next (preemption)
+  - Run-queue is equal to per priority queues, tree ordered based on priority, etc.
+  - Low priority tasks stuck in a run-queue (starvation)
+  - *Priority aging* is where `priority = f(actual priority, time spend in run queue)`
+  - Eventually task will run (prevents starvation!)
