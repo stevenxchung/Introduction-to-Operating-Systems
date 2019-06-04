@@ -9,3 +9,8 @@ On a single CPU system, consider the following workload and conditions:
 - All tasks are long running
 
 What is the **CPU utilization** (%) for a **round robin scheduler** where the **time-slice** is **1 ms**? How about for a **10 ms time-slice**? (round to nearest percent)
+
+A: The answers are as follows,
+
+- 1 ms: 0.91 %
+- 10 ms: 95 %
