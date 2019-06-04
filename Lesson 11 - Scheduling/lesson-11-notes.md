@@ -23,7 +23,7 @@
   - Chooses one of ready **tasks** to run on CPU when:
     - CPU becomes idle
     - New **task** becomes ready
-    - Time slice expired timeout
+    - Time-slice expired timeout
   - **Thread** is dispatched on CPU
 - Scheduling is equivalent to choosing a **task** from ready queue:
   - Which **task** should be selected?
@@ -68,3 +68,47 @@
   - Low priority tasks stuck in a run-queue (starvation)
   - *Priority aging* is where `priority = f(actual priority, time spend in run queue)`
   - Eventually task will run (prevents starvation!)
+
+## Priority Inversion
+
+- Assume SJF (see lecture for table and graph):
+  - Priority: *T1*, *T2*, *T3*
+  - Order of execution: *T2*, *T3*, *T1* (priorities inverted)
+  - Solution:
+    - Temp boost priority of mutex owner
+    - Lower again release
+
+## Round Robin Scheduling
+
+- Pick up first tasks from queue (like FCFS)
+- Task may yield, to wait on I/O (unlike FCFS)
+- Round robin with priorities:
+  - Include preemption
+- Round robin with interleaving:
+  - Time-slicing
+
+## Time-sharing and time-slices
+
+- **Time-slice** - maximum amount of uninterrupted time given to a task (time quantum)
+- Task may run less than time-slice time:
+  - Has to wait for I/O, synchronization, etc. (will be placed on a queue)
+  - Higher priority task becomes runnable
+- Using time-slices tasks are interleaved (time-sharing the CPU):
+  - CPU bound tasks (preempted after time-slice)
+- Pros:
+  - Short tasks finish sooner
+  - More responsive
+  - Lengthy I/O operations initiated sooner
+- Cons:
+  - Overheads (interrupt, schedule, context switch)
+
+## Summarizing Time-slice Length
+
+- How long should a time-slice be?
+  - **CPU bound tasks prefer longer time-slices**:
+    - Limits context switching overheads
+    - Keeps CPU utilization and throughput high
+  - **I/O bound tasks prefer shorter time-slices**:
+    - I/O bound tasks can issue I/O operations earlier
+    - Keeps CPU and device utilization high
+    - Better used perceived performance
