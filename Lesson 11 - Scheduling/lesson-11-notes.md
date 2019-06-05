@@ -179,5 +179,57 @@
     - Rate slower for high-priority
     - Same tree for all priorities
   - Performance:
-    - Select task: *O(1)*
-    - Add task: *O(log(n))*
+    - Select task: _O(1)_
+    - Add task: _O(log(n))_
+
+## Scheduling on Multi-processors
+
+- **Cache-affinity** important!
+  - Keeps tasks on the same CPU as much as possible
+  - Hierarchical scheduler architecture
+- **Per-CPU run-queue** and **scheduler**:
+  - Load balance across CPUs based on queue length or when CPU is idle
+- **NUMA (Non-uniform Memory Access)**:
+  - Multiple memory nodes
+  - Memory node closer to a _socket_ of multiple processors:
+    - Access to local memory node faster than access to remote memory node
+    - Keep tasks on CPU closer to memory node where their state is
+    - NUMA-aware scheduling
+
+## Hyper-threading
+
+- Multiple hardware-supported execution contexts
+- Still one CPU but with **very fast** context switch:
+  - Hardware multi-threading
+  - Hyper-threading
+  - CMT (chip multi-threading)
+  - CMT (simultaneous multi-threading)
+
+## Scheduling for Hyper-threading
+
+- **Assumptions**:
+  - Thread issues instruction on each cycle (one max IPC or instruction per cycle)
+  - Memory access (four cycles)
+  - Hardware switching instantaneous
+  - SMT with two hardware threads
+- Threads _interfere_ and _contend_ for CPU pipeline resource:
+  - Performance degrades
+  - Memory degrades
+- CPU idle: waste CPU cycles
+- Mix of CPU and memory-intensive threads:
+  - Avoid/limit contention on processor pipeline
+  - All components (CPU and memory) well utilized
+  - However, still leads to interference and degradation but minimal
+
+## CPU-bound or Memory-bound?
+
+- Use historic information:
+  - _Sleep time_ won't work:
+    - The thread is not sleeping when waiting on memory
+    - Software takes too much time to compute
+- What about hardware counters?
+  - Hardware counters estimate what kind of resources a thread needs
+  - Scheduler can make informed decisions:
+    - Typically multiple counters
+    - Models with per architecture thresholds
+    - Based on well-understood workloads
