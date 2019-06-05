@@ -233,3 +233,9 @@
     - Typically multiple counters
     - Models with per architecture thresholds
     - Based on well-understood workloads
+
+## CPI Experiment Results
+
+- Resource contention in *SMTs* for process pipeline
+- Hardware counters can be used to characterize workload
+- Schedulers should be aware of resource contention, not just load balancing
