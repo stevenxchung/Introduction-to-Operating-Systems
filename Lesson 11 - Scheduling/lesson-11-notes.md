@@ -53,11 +53,11 @@
 ## Preemptive Scheduling: SJF + Preempt
 
 - **SJF + Preemption**:
-  - *T2* arrives first
-  - *T2* should be preempted
+  - _T2_ arrives first
+  - _T2_ should be preempted
 - **Heuristics based on history**: job running time
 - How long did a task run last time?
-- How long did a task run last *n* times?
+- How long did a task run last _n_ times?
 
 ## Preemptive Scheduling: Priority
 
@@ -66,14 +66,14 @@
   - Run highest priority tasks next (preemption)
   - Run-queue is equal to per priority queues, tree ordered based on priority, etc.
   - Low priority tasks stuck in a run-queue (starvation)
-  - *Priority aging* is where `priority = f(actual priority, time spend in run queue)`
+  - _Priority aging_ is where `priority = f(actual priority, time spend in run queue)`
   - Eventually task will run (prevents starvation!)
 
 ## Priority Inversion
 
 - Assume SJF (see lecture for table and graph):
-  - Priority: *T1*, *T2*, *T3*
-  - Order of execution: *T2*, *T3*, *T1* (priorities inverted)
+  - Priority: _T1_, _T2_, _T3_
+  - Order of execution: _T2_, _T3_, _T1_ (priorities inverted)
   - Solution:
     - Temp boost priority of mutex owner
     - Lower again release
@@ -112,3 +112,72 @@
     - I/O bound tasks can issue I/O operations earlier
     - Keeps CPU and device utilization high
     - Better used perceived performance
+
+## Run-queue Data Structure
+
+- If we want I/O and CPU bound tasks have different time-slice values, then...
+  - Same run-queue, check type, etc.
+  - Two different structures
+- One solution: use a multi-queue data structure with separate internal queues
+  - First time-slice is most I/O intensive (highest priority)
+  - Second time-slice is medium I/O intensive (mix of I/O and CPU processing)
+  - Third and beyond time-slice is CPU intensive (lowest priority)
+  - Pros:
+    - Time-slicing benefits provided for I/O bound tasks
+    - Time-slicing overheads avoided for CPU bound tasks
+- Handling different time-slice values:
+  - Tasks enter top-most queue
+  - If task yields voluntarily keep task at this level
+  - If task uses up entire time-slice push down to lower level
+  - Task in lower queue gets priority boost when releasing CPU due to I/O waits
+- In summary, MLFQ (multi-level feedback queue) is not a priority queue (MLFQ has a feedback mechanism) and offer different treatment of threads at each level
+
+## Linux O(1) Scheduler
+
+- The Linux O(1) scheduler has several of unique characteristics:
+  - The name **O(1)** means it takes constant time to select/add task, regardless of task count
+  - **Preemptive, priority-based**:
+    - Real time (0-99)
+    - Time-sharing (100-139)
+  - **User processes**:
+    - Default 120
+    - Nice value (-20 to 19)
+- Time-slice value for the Linux O(1) scheduler:
+  - Depends on priority
+  - Smallest for low priority
+  - Highest for high priority
+- Feedback for the Linux O(1) scheduler:
+  - Sleep time: waiting/idling
+  - Longer sleep: interactive
+  - Smaller sleep: compute-intensive
+- Run-queue for Linux O(1) scheduler: two arrays of tasks...
+  - Active:
+    - Used to pick next task to run
+    - Constant time to add/select
+    - Tasks remain in queue in active array until time-slice expires
+  - Expired:
+    - Inactive list
+    - When no more tasks in active array (swap active and expired)
+
+## Linux CFS Scheduler
+
+- Problems with Linux O(1) scheduler:
+  - Performance of interactive tasks is not satisfactory
+  - Lacks fairness during task prioritization
+- Solution: Linux CFS (Completely Fair Scheduler)
+  - CFS is the default scheduler since Linux 2.6.23
+  - Run-queue is based on a red-black tree:
+    - Ordered by `vruntime` where `vruntime` is time spent on CPU
+- CFS scheduling works as follows:
+  - Always pick left-most node
+  - Periodically adjust `vruntime`
+  - Compare to left-most `vruntime`:
+    - If smaller, continue running
+    - If larger, preempt and place appropriately in the tree
+  - `vruntime` progress rate depends on priority and niceness:
+    - Rate fast for low-priority
+    - Rate slower for high-priority
+    - Same tree for all priorities
+  - Performance:
+    - Select task: *O(1)*
+    - Add task: *O(log(n))*
