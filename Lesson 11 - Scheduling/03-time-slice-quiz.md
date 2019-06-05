@@ -1,4 +1,4 @@
-# Problem 3: Time-slice
+# Quiz 3: Time-slice
 
 On a single CPU system, consider the following workload and conditions:
 
