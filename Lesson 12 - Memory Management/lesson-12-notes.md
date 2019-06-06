@@ -98,3 +98,59 @@
     - Granularity of coverage (potential reduced page table size)
   - Cons:
     - More memory access required for translation (increased translation latency)
+
+## Speeding Up Translation TLB
+
+- Overhead of address translation:
+  - Single-level page table:
+    - 1x access to page table entry
+    - 1x access to memory
+  - Four-level page table:
+    - 4x accesses to page table entries
+    - 1x access to memory (can lead to slow down!)
+- **Page table cache (TLB)**:
+  - MMU-level address translation cache
+  - On TLB miss: page table access from memory
+  - Has protection/validity bits
+  - Small number of cached address, high TLB hit rate and temporal and spatial locality
+
+## Inverted Page Tables
+
+- Another way of organizing the address translation process (see lecture for the inverted page table diagram):
+  - Components:
+    - Logical address
+    - Physical address
+    - Physical memory
+    - Page table
+    - Search
+  - TLB to catch memory references
+- Inverted page tables use hashing page tables (see lecture for diagram) to optimize efficiency:
+  - Speeds up linear search process and narrows it down to few possible entries into the inverted page table, this speeds up address translation
+
+## Segmentation
+
+- **Segments** are arbitrary and granular:
+  - E.g., code, heap, data, stack, etc.
+  - Address is equivalent to the segment selector + offset
+- **Segment** is a contiguous physical memory:
+  - Segment size is equivalent to segment base + limit registers
+- **Segmentation + paging**:
+  - IA x86_32: segmentation + paging
+    - Linux up to 8K per process / global segment
+  - IA 86x_64: paging
+
+## How Large is a Page?
+
+- 10-bit offset: 1 KB page size
+- 12-bit offset: 4 KB page size
+- Below is a table detailing _large vs huge_ pages
+
+|                                       | Large   | Huge    |
+| ------------------------------------- | ------- | ------- |
+| Page size                             | 2 MB    | 1 GB    |
+| Offset bits                           | 21 bits | 30 bits |
+| Reduction factor (on page table size) | x512    | x1024   |
+
+- In general, for larger pages:
+  - Pros: fewer page table entries, smaller page tables, more TLB hits, etc.
+  - Cons: internal fragmentation (wastes memory)
