@@ -21,3 +21,5 @@ while(1) {
     break;
 }
 ```
+
+A: 100% since physical memory only has 10 pages, we have to demand the first page in and pick out another page to swap and replace.
