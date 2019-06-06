@@ -30,7 +30,7 @@
 ## Memory Management: Hardware Support
 
 - MMU (memory management unit):
-  - Translate **virtual** to **physical addresses**
+  - Translate **VA (virtual address)** to **PA (physical addresses)**
   - Reports faults: illegal access, permission not present in memory
 - Registers:
   - Pointers to page table
@@ -154,3 +154,67 @@
 - In general, for larger pages:
   - Pros: fewer page table entries, smaller page tables, more TLB hits, etc.
   - Cons: internal fragmentation (wastes memory)
+
+## Memory Allocation
+
+- **Memory allocator**:
+  - Determines VA to PA mapping, address translation, page tables, etc.
+  - Simply determine PA from VA and check validity/permissions
+- **Kernel-level allocators**:
+  - Kernel state, static process state
+- **User-level allocators**:
+  - Dynamic process state (heap), malloc/free
+  - E.g., `dimalloc`, `jemalloc`, `hoard`, `tcmalloc`
+
+## Memory Allocation Challenges
+
+- Problem: **external fragmentation**
+  - Occurs with multiple interleaved allocate and free operations, and as a result of them, we have holes of free memory that is not contiguous
+  - Requests for larger contiguous memory allocations cannot be satisfied
+- Solution:
+  - When pages are freed, the allocator can aggregate adjacent areas of free pages into one larger free area, this allows for larger future requests
+
+## Allocators in the Linux Kernel
+
+- The Linux kernel relies on two basic allocation mechanisms:
+  - **Buddy**:
+    - Starts with consecutive memory region that's free (2^x area)
+    - On request, sub-divide into 2^x chunks and find smallest 2^x chunk that can satisfy request (fragmentation still there)
+    - On free:
+      - Check buddy to see if it can aggregate into a larger chunk
+      - Aggregate more up the tree (aggregation works well and fast)
+  - **Slab**:
+    - Addresses 2^x granularity in Buddy
+    - Addresses internal fragmentation
+    - **Slab allocator**:
+      - Caches for common object types/sizes, on top of contiguous memory
+    - Pros:
+      - Internal fragmentation avoided
+      - External fragmentation not an issue
+
+## Demand Paging
+
+- Virtual memory >> physical memory:
+  - Virtual memory page note always in physical memory
+  - Physical page frame saved and restored to/from secondary storage
+- **Demand paging**: pages swapped in/out of memory and a swap partition
+  - Original PA is not equal to PA after swap
+  - If page is _pinned_ swapping disabled
+
+## Freeing Up Physical Memory
+
+- When should pages be swapped out?
+  - OS runs page (out) daemon:
+    - When memory usage is above threshold (high watermark)
+    - When CPU usage is below threshold (low watermark)
+- Which pages should be swapped out?
+  - Pages that won't be used
+  - History-based prediction:
+    - LRU (least-recently used) policy: access bit to track if page is referenced
+  - Pages that don't need to be written out
+    - Dirty bit to track if modified
+  - Avoid non-swappable pages
+- In Linux:
+  - Parameters to tune thresholds: target page count, etc.
+  - Categorize pages into different types: e.g., claimable, swappable, etc.
+  - _Second chance_ variation of LRU
