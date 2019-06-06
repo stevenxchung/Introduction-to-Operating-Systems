@@ -139,7 +139,7 @@
     - Linux up to 8K per process / global segment
   - IA 86x_64: paging
 
-## How Large is a Page?
+## Page Size
 
 - 10-bit offset: 1 KB page size
 - 12-bit offset: 4 KB page size
