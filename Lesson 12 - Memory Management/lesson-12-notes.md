@@ -218,3 +218,39 @@
   - Parameters to tune thresholds: target page count, etc.
   - Categorize pages into different types: e.g., claimable, swappable, etc.
   - _Second chance_ variation of LRU
+
+## Copy On Write
+
+- MMU Hardware:
+  - Perform translation, track access, enforce protection, etc.
+  - Useful to build other services and optimizations
+- **COW (copy-on-write)**:
+  - On process creation:
+    - Copy entire parent address space
+    - Many pages are static, don't change (why keep multiple copies?)
+  - On create:
+    - Map new VA to original page
+    - Write protect original page
+    - If only read: save memory and time to copy
+  - On write:
+    - Page fault copy
+    - Pay copy cost only if necessary
+
+## Failure Management Check-pointing
+
+- **Check-pointing**: failure and recovery management technique
+  - Periodically save process state
+  - Failure may be unavoidable but can restart from checkpoint so recovery much faster
+- **Simple approach**: pause and copy
+- **Better approach**:
+  - Write-protect and copy everything once
+  - Copy diffs of _dirtied_ pages for incremental checkpoints, rebuild from mutiple diffs, or in background
+- **Debugging**:
+  - RR (rewind-replay)
+  - Rewind means to restart from checkpoint
+  - Gradually go back to older checkpoints until error found
+- **Migration**:
+  - Continue on another machine
+  - Disaster recovery
+  - Consolidation
+  - Repeated checkpoints in a fast loop until pause-and-copy becomes acceptable (or unavoidable)
