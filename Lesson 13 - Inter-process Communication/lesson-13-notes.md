@@ -66,3 +66,35 @@
 - Cons:
   - Explicit synchronization
   - Communication protocol, shared buffer management, etc. (programmer responsibility)
+
+## Copy vs Map
+
+- Goal: transfer data from one into target address space
+- **Copy**:
+  - CPU cycles to copy data to/from port
+  - Large data: `t(copy) >> t(map)`
+- **Map**:
+  - CPU cycles to map memory into address space
+  - CPU to copy data to channel
+  - Set up once use many times (good payoff)
+  - Can perform well for one-time use
+- Tradeoff exercised in Windows LPC (local producer callsS)
+
+## SysV Shared Memory
+
+- **Segments** of shared memory: not necessarily contiguous physical pages
+- Shared memory is system-wide: system limits on number of segments and total size
+- **Create**: OS assigns unique key
+- **Attach**: map VA to PA
+- **Detach**: invalidate address mappings
+- **Destroy**: only remove when explicitly deleted (or reboot)
+
+## Shared Memory and Sync
+
+- _Like threads accessing shared state in a single address space but for processes_
+- **Synchronization method**:
+  - Mechanisms supported by process threading library (pthreads)
+  - OS-supported IPC for synchronization
+- **Either method must coordinate**:
+  - Number of concurrent access to shared segment
+  - When data is available and ready for consumption
