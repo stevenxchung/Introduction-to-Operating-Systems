@@ -98,3 +98,29 @@
 - **Either method must coordinate**:
   - Number of concurrent access to shared segment
   - When data is available and ready for consumption
+
+## Shared Memory Design Considerations
+
+- Consider the following when designing for memory:
+  - Different API/mechanisms for synchronization
+  - OS provides shared memory and is out of the way
+  - Data passing/sync protocols are up to the programmer
+
+## How Many Segments?
+
+- One large segment: manager for allocating/freeing memory from shared segment
+- Many small segment:
+  - Use pool of segments, queue of segment ids
+  - Communicate segment IDs among processes
+
+## Design Considerations
+
+- Consider the following questions:
+  - What size segments?
+  - What if data doesn't fit
+- Segment size is equivalent to data size:
+  - Works for well-known static sizes
+  - Limits max data size
+- Segment size is greater than message size:
+  - Transfer data in rounds
+  - Include protocol to track progress
