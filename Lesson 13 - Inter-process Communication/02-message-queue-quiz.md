@@ -6,3 +6,10 @@ For **message queues** what are the **Linux system calls** that are used for:
 - Receive messages from a message queue?
 - Perform a message control operation?
 - Get a message identifier?
+
+A: The answers are as follows,
+
+- `msgsnd()`
+- `msgrcv()`
+- `msgctl()`
+- `msgget()`
