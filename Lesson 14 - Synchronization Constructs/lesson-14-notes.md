@@ -7,7 +7,7 @@
 ## Visual Metaphor
 
 - **Synchronization** is like **waiting** for a coworker to finish **so you can continue working**:
-  - May repeadtedly check to contine:
+  - May repeatedly check to continue:
     - Sync using spinlocks
   - May wait for a signal to continue:
     - Sync using mutexes and condition variables
@@ -40,5 +40,23 @@
 - **Count-based sync** (semaphores can be an integer value):
   - On init: assigned a max value positive integer (maximum count)
   - On try (wait): if non-zero, decrement and proceed (counting semaphore)
-  - If initialized with `1`: semaphore is equal to mutex (binary sempahore)
+  - If initialized with `1`: semaphore is equal to mutex (binary semaphore)
   - On exit (post): increment
+
+## Reader Writer Locks
+
+- Syncing different types of accesses:
+  - Read (never modify): shared access
+  - Write (always modify): exclusive access
+- Read/write locks:
+  - Specify the type of access then lock behaves accordingly
+
+## Monitors
+
+- Monitors are a high-level synchronization construct
+- Monitors specify:
+  - Shared resource
+  - Entry procedure
+  - Possible condition variables
+- On entry: lock, check, etc.
+- On exit: unlock, check, signal, etc.
