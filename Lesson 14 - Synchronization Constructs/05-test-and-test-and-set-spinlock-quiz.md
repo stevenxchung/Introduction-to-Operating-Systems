@@ -4,3 +4,8 @@ In an SMP system with **N processors**, what is the **complexity** of the memory
 
 - Cache coherent with `write_update` 
 - Cache coherent with `write_invalidate`
+
+A: The answers are as follows,
+
+- *O(n)*
+- *O(n^2)*
