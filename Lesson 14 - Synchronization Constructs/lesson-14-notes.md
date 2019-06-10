@@ -118,3 +118,29 @@ spinlock_lock(lock): // Spin until free
 - Reduce **contention**:
   - _Bus/network I/C traffic_
   - Ideally zero
+
+## Test and Set Spinlock
+
+- Test and set spinlock implementation (see lecture):
+  - Pros:
+    - Latency: minimal (atomic)
+    - Delay: Potentially min (spinning continuously on the atomic)
+  - Cons:
+    - Contention: processors go to memory on each spin
+
+## Test and Test and Set Spinlock
+
+- Test and test and set spinlock implementation (see lecture):
+  - Spin on read
+  - Spin on cached value
+  - Pros:
+    - Latency: ok
+    - Delay: ok
+  - Cons:
+    - Contention: better than test and set spinlock but...
+      - Non-cached coherent architecture: no difference
+      - Cache coherence with write update architecture: ok
+      - Cache coherence with write invalidate architecture: horrible
+    - Contention due to atomics + caches invalidated means more contention
+    - Everyone sees lock is free at the same time
+    - Everyone tries to acquire the lock at the same time
