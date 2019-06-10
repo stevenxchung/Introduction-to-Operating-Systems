@@ -144,3 +144,59 @@ spinlock_lock(lock): // Spin until free
     - Contention due to atomics + caches invalidated means more contention
     - Everyone sees lock is free at the same time
     - Everyone tries to acquire the lock at the same time
+
+## Spinlock _Delay_ Alternatives
+
+- Delay after lock release:
+  - Everyone sees lock is free
+  - Not everyone attempts to acquire it
+  - Pros:
+    - Contention improved
+    - Latency ok
+  - Cons:
+    - Delay is much worse
+- Delay after each lock reference:
+  - Does not spin constantly
+  - Works on non-cached coherent architectures
+  - Can hurt delay even more however
+  - Pros:
+    - Contention improved
+    - Latency ok
+  - Cons:
+    - Delay is **much worse**
+
+## Picking a Delay
+
+- **Static Delay** (based on fixed value, e.g., CPU ID):
+  - Simple approach
+  - Unnecessary delay under low contention
+- **Dynamic Delay** (backoff-based):
+  - Random delay in a range that increases with _perceived_ contention
+  - Perceived is the same as failed `test_and_set()`
+  - Delay after each reference will keep growing based on contention or length of critical section
+
+## Queueing Lock
+
+- **Common problem in spinlock implementations**:
+  - Everyone tries to acquire lock at the same time once lock is freed: delay alternatives
+  - Everyone sees the lock is free at the same time (Anderson's Queueing Lock)
+- Solution:
+  - Set unique **ticket** for arriving thread
+  - Assigned `queue[ticket]` is private lock
+  - Enter critical section when you have lock:
+    - `queue[ticket] == must_wait` (spin)
+    - `queue[ticket] == has_lock` (enter critical section)
+  - Signal/set next lock holder on exit:
+    - `queue[ticket + 1] = has_lock`
+- Cons:
+  - Assumes `read_and_increment` atomic
+  - _O(n)_ size
+
+## Queueing Lock Implementation
+
+- Pros:
+  - Delay: directly signal next CPU/thread to run
+  - Contention: better but requires cache coherence and cache line aligned elements
+  - Only one CPU/thread sees the lock is free and tries to acquire lock!
+- Cons:
+  - Latency: more costly read and increment
