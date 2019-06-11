@@ -200,3 +200,19 @@ spinlock_lock(lock): // Spin until free
   - Only one CPU/thread sees the lock is free and tries to acquire lock!
 - Cons:
   - Latency: more costly read and increment
+
+## Spinlock Performance Comparisons
+
+- **Setup** (see lecture for figure):
+  - _N_ processes running critical section one million times
+  - _N_ varied based on system
+- **Metrics**:
+  - Overhead compared to ideal performance
+  - Theoretical limit based on number of critical sections to be run
+- **Under high loads**:
+  - Queue best (most scalable), `test_and_test_and_set` worst
+  - Static better than dynamic, reference better than release (avoids extra invalidations)
+- **Under light loads**:
+  - `test_and_test_and_set` good (low latency)
+  - Dynamic better than static (lower delay)
+  - Queueing lock worst (high latency due to read and increment)
