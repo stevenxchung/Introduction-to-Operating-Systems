@@ -9,3 +9,13 @@ For each **device**, indicate whether it's typically used for **input (I)**, **o
 - Display
 - Flash card
 - Hard disk drive
+
+A: The answers are as follows:
+
+- Keyboard: **I**
+- Microphone: **I**
+- Speaker: **O**
+- Network interface card (NIC): **B**
+- Display: **O**
+- Flash card: **B**
+- Hard disk drive: **B**
