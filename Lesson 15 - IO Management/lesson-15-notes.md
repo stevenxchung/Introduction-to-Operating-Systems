@@ -93,3 +93,43 @@
   - Less steps but DMA config is more complex
 - For DMAs:
   - Data buffer must be in physical memory until transfer completes: pinning regions (non-swappable)
+
+## Typical Device Access
+
+- *See lecture for diagram*
+- Typical device access includes the following:
+  - System call
+  - In-kernel stack
+  - Driver invocation
+  - Device request configuration
+  - Device performs request
+
+## OS Bypass
+
+- *See lecture for diagram*
+- Device regs/data directly accessible
+- OS configures then out-of-the-way
+- **User-level driver**:
+  - OS retains coarse-grain control
+  - Relies on device features:
+    - Sufficient registers
+    - Demux capability
+
+## Sync vs Async Access
+
+- *See lecture for diagram*
+- **Synchronous I/O operations**: process blocks
+- **Asynchronous I/O operations**: process continues
+  - Process checks and retrieves result
+  - Process is notified that the operation completed and results are ready
+
+## Block Device Stack
+
+- *See lecture for diagram*
+- Processes use files: logical storage unit
+- Kernel file system (FS):
+  - Where and how to find and access file
+  - OS specifies interface
+- Generic block layer:
+  - OS standardized block interface
+- Device driver
