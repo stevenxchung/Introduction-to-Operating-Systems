@@ -96,7 +96,7 @@
 
 ## Typical Device Access
 
-- *See lecture for diagram*
+- _See lecture for diagram_
 - Typical device access includes the following:
   - System call
   - In-kernel stack
@@ -106,7 +106,7 @@
 
 ## OS Bypass
 
-- *See lecture for diagram*
+- _See lecture for diagram_
 - Device regs/data directly accessible
 - OS configures then out-of-the-way
 - **User-level driver**:
@@ -117,7 +117,7 @@
 
 ## Sync vs Async Access
 
-- *See lecture for diagram*
+- _See lecture for diagram_
 - **Synchronous I/O operations**: process blocks
 - **Asynchronous I/O operations**: process continues
   - Process checks and retrieves result
@@ -125,7 +125,7 @@
 
 ## Block Device Stack
 
-- *See lecture for diagram*
+- _See lecture for diagram_
 - Processes use files: logical storage unit
 - Kernel file system (FS):
   - Where and how to find and access file
@@ -133,3 +133,74 @@
 - Generic block layer:
   - OS standardized block interface
 - Device driver
+
+## Virtual File System
+
+- Problem: how to address the following?
+  - What if files are on more than one device?
+  - What if devices work better with different file system implementations?
+  - What if files are not on a local device (accessed via network)?
+- Solution: use a file system
+
+## Virtual File System Abstractions
+
+- **File**: elements on which the VFS (virtual file system) operations
+- **File descriptor**: OS representation of file
+  - Open, read, write, send file, lock, close, etc.
+- **Inode**: persistent representation of file _index_
+  - List of all data blocks
+  - Device, permissions, size, etc.
+- **Dentry**: directory entry, corresponds to single path component
+- **Superblock**: file system specific information regarding the file system layout
+
+## VFS on Disk
+
+- **File**: data blocks on disk
+- **Inode**: track files' blocks and also resides on disk in some block
+- **Superblock**: overall map of disk blocks
+  - Inode blocks
+  - Data blocks
+  - Free blocks
+
+## `ext2`: Second Extended File System
+
+- For each block group:
+  - **Superblock**: number of inodes, disk blocks, start of free blocks
+  - **Group descriptor**: bitmaps, number of free nodes, directories
+  - **Bitmaps**: tracks free blocks and inodes
+  - **Inodes**: one to max number (one per file)
+  - **Data blocks**: file data
+
+## Inodes
+
+- **Inodes**: index of all disk blocks corresponding to a file
+  - File: identified by inode
+  - Inode: list of all blocks plus other metadata
+- Pros: easy to perform sequential or random access
+- Cons: limit on file size
+
+## Inodes with Indirect Pointers
+
+- **Inodes with indirect pointers**: index of all disk blocks corresponding to a file
+- Inodes contain:
+  - Metadata
+  - Pointers to blocks
+- **Direct pointer**: points to data block
+- **Indirect pointer**: block of pointers
+- **Double indirect pointer**: block of block of pointers
+- Pros: small inode means large file size
+- Cons: file access slow down
+
+## Disk Access Optimizations
+
+- **Caching/buffering**: reduce number of disk accesses
+  - Buffer cache in main memory
+  - Read/write from cache
+  - Periodically flush to disk (`fsync()`)
+- **I/O scheduling**: reduce disk head movement
+  - Maximize sequential vs random access
+- **Prefetching**: increase cache hits
+  - Leverages locality
+- **Journaling/logging**: reduce random access
+  - _Describe_ write in log: block, offset, value, etc.
+  - Periodically apply updates to proper disk locations
