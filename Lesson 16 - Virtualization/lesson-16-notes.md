@@ -18,3 +18,10 @@
   - Provides environment essentially identical with the original machine
   - Programs show at worst only minor decrease in speed
   - VMM is in complete control of system resources
+
+## Benefits of Virtualization
+
+- Pros:
+  - Consolidation: decrease cost; improve manageability
+  - Migration: availability, reliability
+  - Security, debugging, support for legacy OS
