@@ -25,3 +25,26 @@
   - Consolidation: decrease cost; improve manageability
   - Migration: availability, reliability
   - Security, debugging, support for legacy OS
+
+## Virtualization Models: Bare-metal
+
+- **Bare-metal**: hypervisor-based
+  - VMM (hypervisor) manages all hardware resources and supports execution of VMs
+  - Privileged, service VM to deal with devices
+- Xen (open source or Citrix XenServer):
+  - DomO and DomU
+  - Drivers in DomO
+- ESX (VMWare):
+  - Many open APIs
+  - Drivers in VMM
+  - Used to have Linux control core, now remote APIs
+
+## Virtualization Models: Hosted
+
+- **Hosted**:
+  - Host OS owns all hardware
+  - Special VMM module provides **hardware interfaces** to VMs and deals with VM context switching
+- Example: KVM (kernel-based VM shown in lecture)
+  - Based on Linux
+  - KVM kernel module plus QEMU (Quick Emulator) for hardware virtualization
+  - Leverages Linux open-source community
