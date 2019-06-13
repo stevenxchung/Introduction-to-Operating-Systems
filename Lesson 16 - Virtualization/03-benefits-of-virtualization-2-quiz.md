@@ -6,3 +6,5 @@ If **virtualization** was not widely adopted in the past, what changed? Why did 
 - Option 2: data centers were becoming too large
 - Option 3: companies had to hire more system admins
 - Option 4: companies were paying high utility bills to run and cool servers
+
+A: The correct answer all of the above.
