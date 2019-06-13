@@ -5,3 +5,5 @@ Based on the classical definition of **virtualization** by Popek and Goldberg, w
 - Option 1: Virtual Box
 - Option 2: Java Virtual Machine
 - Option 3: Virtual Game Boy
+
+A: The answer is Option 1.
