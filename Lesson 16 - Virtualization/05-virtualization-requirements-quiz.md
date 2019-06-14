@@ -6,3 +6,5 @@ Which of the following do you think are **virtualization requirements**?
 - Option 2: provide isolation across VMs
 - Option 3: protect guest OS from apps
 - Option 4: protect VMM from guest OS
+
+A: The correct answers are all of the above
