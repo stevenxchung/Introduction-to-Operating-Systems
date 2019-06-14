@@ -6,3 +6,5 @@ In earlier x86 platforms the flags **privileged register** was accessed via the 
 - Option 2: guest VM could not request interrupts disabled
 - Option 3: guest VM could not find out what is the state of the interrupts enabled/disabled bit
 - Option 4: all of the above
+
+A: The correct answer is Option 4, all of the above.
