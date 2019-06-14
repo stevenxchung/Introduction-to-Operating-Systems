@@ -68,3 +68,25 @@
 - Cons:
   - Hypervisor does not know so it does not try to change settings
   - OS does not know, so it assumes change was successful
+
+## Binary Translation
+
+- **Main idea**: rewrite the VM binary to never issue those 17 instructions
+  - Pioneered by Mendel Rosenblum's group at Stanford, commercialized as VMware
+- **Binary translation**:
+  - Goal: full virtualization (guest OS not modified)
+  - Approach: dynamic binary translation
+- Inspect code blocks to be executed
+- If needed, translate to alternate instruction sequence
+- Otherwise, run at hardware speeds
+
+## Paravirtualization
+
+- Goal: performance, give up on unmodified guests
+- Approach: paravirtualization, modify guest so that...
+  - It knows it's running virtualized
+  - It makes explicit calls to the hypervisor (hypercalls)
+  - **Hypercall**: system calls
+    - Package context info
+    - Specify desired hypercall
+    - Trap to VMM
