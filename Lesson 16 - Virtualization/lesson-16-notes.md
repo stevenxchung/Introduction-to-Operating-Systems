@@ -48,3 +48,23 @@
   - Based on Linux
   - KVM kernel module plus QEMU (Quick Emulator) for hardware virtualization
   - Leverages Linux open-source community
+
+## Processor Virtualization
+
+- **Trap-and-emulate**:
+  - Guest instructions are executed directly by hardware
+  - For non-privileged operations: hardware speeds must provide efficiency
+  - For privileged operations: trap to hypervisor
+  - Hypervisor determines what needs to be done:
+    - If illegal operation: terminate VM
+    - If legal operation: emulate the behavior the guest OS was expecting from the hardware
+
+## x86 Virtualization in the Past
+
+- **x86 virtualization pre-2005**
+  - Four rings, no root/non-root modes yet
+  - Hypervisor in ring 0, guest OS in ring 1
+  - However, 17 privileged instructions do not trap, they fail silently!
+- Cons:
+  - Hypervisor does not know so it does not try to change settings
+  - OS does not know, so it assumes change was successful
