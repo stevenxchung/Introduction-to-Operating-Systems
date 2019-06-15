@@ -12,7 +12,7 @@
 - **Virtual machine (VM)**: OS applications and virtual resources (guest domain)
 - **Virtualization layer**: management of physical hardware (virtual machine monitor, hypervisor)
 
-## Definining Virtualization
+## Defining Virtualization
 
 - A **virtual machine** is an **efficient, isolated duplicated of the real machine** supported by a **VMM (virtual machine monitor)**:
   - Provides environment essentially identical with the original machine
@@ -90,3 +90,82 @@
     - Package context info
     - Specify desired hypercall
     - Trap to VMM
+
+## Memory Virtualization Full
+
+- All guests expect contiguous physical memory, starting at 0
+- Virtual vs physical vs machine addresses (VA vs PA vs MA) and page frame numbers
+- Still leverages hardware MMU, TLB, etc.
+- **Option 1**:
+  - Guest page table: VA to PA
+  - Hypervisor: PA to MA
+  - **Too expensive!**
+- **Option 2**:
+  - Guest page tables: VA to PA
+  - Hypervisor shadow PT: VA to MA
+  - Hypervisor maintains consistence
+
+## Memory Virtualization Paravirtualized
+
+- **Paravirtualized**:
+  - Guest aware of virtualization
+  - No longer strict requirement on contiguous physical memory starting at 0
+  - Explicitly registers page tables with hypervisor
+  - Can _batch_ page table updates to reduce VM exits
+  - _Other optimizations_
+- **Bottom line**: overheads eliminated or reduced on newer platforms
+
+## Device Virtualization
+
+- For CPUs and memory:
+  - Less diversity
+  - ISA level (instruction set architecture level) _standardization_ of interface
+- For devices:
+  - High diversity
+  - Lack of standard specification of device interface and behavior
+- Three key models for device virtualization (see later slides)
+
+## Passthrough Model
+
+- **Approach**: VMM-level driver configures device access permissions
+- Pros:
+  - VM provided with exclusive access to the device
+  - VM can directly access the device (VMM-bypass)
+- Cons:
+  - Device sharing difficult
+  - VMM must have exact type of device as what VM expects
+  - VM migration tricky
+
+## Hypervisor Direct Model
+
+- **Approach**:
+  - VMM intercepts all device accesses
+  - Emulate device operation:
+    - Translate to generic I/O operation
+    - Transverse VMM-resident I/O stack
+    - Invoke VMM-resident driver
+- Cons:
+  - Latency of device operations
+  - Device driver ecosystem complexities in hypervisor
+
+## Split-device Driver Model
+
+- **Approach**:
+  - Device access control **split** between:
+    - Front-end driver in guest VM (device API)
+    - Back-end driver in service VM (or host)
+    - Modified guest drivers
+- Pros:
+  - Eliminate emulation overhead
+  - Allow for better management of shared devices
+
+## Hardware Virtualization
+
+- **AMD Pacifica and Intel Vanderpool Technology (Intel-VT)**, 2005:
+  - _Close holes_ in x86 ISA
+  - Modes: root/non-root (or _host_ and _guest_ mode)
+  - VM control structure
+  - Extended page tables and tagged TLB with VM ids
+  - Multi-queue devices and interrupt routing
+  - Security and management support
+  - Additional instructions to exercise previously mentioned features
