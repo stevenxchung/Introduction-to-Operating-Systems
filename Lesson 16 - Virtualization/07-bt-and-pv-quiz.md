@@ -4,3 +4,5 @@ Which of the following do you think will cause a **trap** and **exit to the hype
 
 - Option 1: access a page that's swapped
 - Option 2: update to page table entry
+
+A: The correct answer is Option 1.
