@@ -211,3 +211,29 @@
     - String line `<80>`: c pointer to `char`
     - Stored in memory as a normal null-terminated string
     - Encoded (for transmission) as a pair of length and data
+
+## XDR Routines
+
+- **Marshalling/unmarshalling**: found in `square_xdr.c`
+- **Clean-up**:
+  - `xdr_free()`
+  - User-defined `freeresult` procedure (e.g., `square_prog_1_freeresult`)
+  - Called after results returned
+
+## Encoding
+
+- What goes on the wire?
+  - **Transport header** (e.g., TCP, UDP)
+  - **RPC header**: service procedure ID, version number, request ID, etc.
+  - **Actual data**:
+    - Arguments or results
+    - Encoded into a byte stream depending on data type
+
+## XDR Encoding
+
+- **XDR**: **IDL + the encoding** (i.e., the binary representation of data _on-the-wire_)
+- **XDR encoding rules**:
+  - All data types are encoded in multiples of four bytes
+  - Big endian is the transmission standard
+  - Two's complement is used for integers
+  - IEEE format is used for floating point
