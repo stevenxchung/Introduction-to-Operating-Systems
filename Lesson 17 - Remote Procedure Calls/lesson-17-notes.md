@@ -180,3 +180,34 @@
 - `rpcgen -C square.x`: not thread safe!
 - `rpcgen -C -M square.x`: multi-threading safe!
   - Does not make a multi-threaded _svc.c_ server
+
+## Sun RPC Registry
+
+- **RPC daemon**: port mapper
+- **Query with** `rpcinfo -p`:
+  - `/usr/sbin/rpcinfo -p`
+  - Program id, version, protocol (tcp, udp), socket port number, service name, etc.
+  - Port mapper runs with tcp and udp on port 111
+
+## Sun RPC Binding
+
+- **Client type**:
+  - Client handle
+  - Status, error, authentication, etc.
+
+## XDR Data Types
+
+- **Default types**:
+  - `char`, `byte`, `int`, `float`
+- Additional XDR types:
+  - `const` (`#define`)
+  - `hyper` (64-bit `integer`)
+  - `quadruple` (128-bit `float`)
+  - `opaque` (C `byte`)
+    - Uninterpreted binary data
+- **Fixed-length array** (e.g., `int data[80]`)
+- **Variable-length array** (e.g., `int data<80>`): translates into a data structure with _len_ and _val_ fields
+  - **Except for strings**:
+    - String line `<80>`: c pointer to `char`
+    - Stored in memory as a normal null-terminated string
+    - Encoded (for transmission) as a pair of length and data
