@@ -122,3 +122,61 @@
   - Timeout and retry (no guarantees!)
 - Special RPC error notification (signal, exception, etc.):
   - Catch all possible ways in which the RPC call can (partially) fail
+
+## RPC Design Choice Summary
+
+- **Design decisions for RPC systems** (e.g., Sun RPC, Java RMI)
+  - **Binding**: how to find the server
+  - **IDL**: how to talk to the server; how to package data
+  - **Pointers as arguments**: disallow or serialize pointed data
+  - **Partial failures**: special error notifications
+
+## What is Sun RPC?
+
+- Sun RPC was developed in the 80x by Sun for UNIX; now widely available on other platforms
+- Design choices:
+  - **Binding**: per-machine registry daemon
+  - **IDL**: XDR (for interface specification and for encoding)
+  - **Pointers as arguments**: allowed and serialized
+  - **Partial failures**: retries; return as much information as possible
+
+## Sun RPC Overview
+
+- _See lecture for figure_
+- Client-server via procedure calls
+- Interface specified via XDR (x file)
+- `rpcgen` compiler: converts x to language-specified stubs
+- Server registers with local registry damon
+- Registry:
+  - Name of service, version, protocol(s), port number, etc.
+- Binding creates handle:
+  - Client uses handle in calls
+  - RPC run-time uses handle to track per-client RPC state
+- Client and server on same or different machines
+- Documentation, tutorials and examples now maintained by Orcale
+  - TI-RPC: Transport-independent Sun RPC
+  - Provides Sun RPC/XDR documentation and code examples
+  - Older online references still relevant
+  - Linux man pages for _rpc_
+
+## Compiling XDR
+
+- `rpcgen` compiler:
+  - `square.h`: data types and function definitions
+  - `square_svc.c`: server stub and skeleton (main)
+  - `square_clnt.c`: client stub
+  - `square_xdr.c`:common marshalling routines
+
+## Summarizing XDR Compilation
+
+- _See lecture for figure_
+- **Developer**:
+  - Server code: implementation of `square.proc_1_svc`
+  - Client side: call `squareproc_1()`
+  - `#include.h`
+  - Link with stub objects
+- **RPC run-time - the rest**:
+  - OS interactions, communication management, etc.
+- `rpcgen -C square.x`: not thread safe!
+- `rpcgen -C -M square.x`: multi-threading safe!
+  - Does not make a multi-threaded _svc.c_ server
