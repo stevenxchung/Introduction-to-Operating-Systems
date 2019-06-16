@@ -10,3 +10,5 @@ Assume an **RPC fails** and returns a **timeout message**. Given this **timeout 
 - Option 6: server process overloaded
 - Option 7: all of the above
 - Option 8: any of the above
+
+A: The answer is Option 8, any of the above could cause an RPC failure.
