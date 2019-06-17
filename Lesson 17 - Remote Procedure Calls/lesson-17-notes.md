@@ -237,3 +237,15 @@
   - Big endian is the transmission standard
   - Two's complement is used for integers
   - IEEE format is used for floating point
+
+## Java RMI
+
+- **Java RMI (Remote Method Invocations)**:
+  - Among address spaces in JVM(s)
+  - Matches Java OO semantics
+  - **IDL**: Java (language specific)
+- **RMI run-time**:
+  - **Remote reference layer**:
+    - Unicast, broadcast, return-first response, return-if-all-match
+  - **Transport**:
+    - TCP, UDP, shared memory, etc.
