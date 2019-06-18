@@ -6,3 +6,5 @@ In the previous morsel, we mentioned that **a file handle can become stale**. Wh
 - Option 2: the remote server is not working
 - Option 3: the file on the remote server has been removed
 - Option 4: the file has been open for too long
+
+A: The correct answer is Option 3.
