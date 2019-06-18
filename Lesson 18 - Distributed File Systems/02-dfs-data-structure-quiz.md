@@ -6,3 +6,5 @@ Image a **DFS** where **file sharing** is implemented via a **server-driven** me
 - Option 2: current writer
 - Option 3: current writers
 - Option 4: version number
+
+A: The correct answers are Option 1, 3, and 4.
