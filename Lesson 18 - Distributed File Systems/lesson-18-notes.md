@@ -85,3 +85,16 @@
   - SMP: on write
   - DFS: on demand, periodically, on open, etc.
 - Details depend on file sharing semantics
+
+## File Sharing Semantics on a DFS
+
+- **UNIX semantics**: every write visible immediately
+- **Session semantics**: (between open-close: session)
+  - Write-back on `close()`, update on `open()`
+  - Easy to reason, but may be insufficient
+- **Periodic updates**:
+  - Client writes-back periodically: clients have a _lease_ on cached data (not exclusive necessarily)
+  - Server invalidates periodically: provides bounds on _inconsistency_
+  - Augment with `flush()`/`sync()` API
+- **Immutable files**: never modify, new files created instead
+- **Transactions**: all changes atomic
