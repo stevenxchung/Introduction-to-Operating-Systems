@@ -131,3 +131,16 @@
     - On failure, lose portion of data
     - Load balancing harder; if not balanced them hot-spots possible
 - Can combined both techniques, replicate each partition
+
+## NFS (Network File System)
+
+- _See lecture for figure_
+- A network system typically includes a client and a server
+- **Client**:
+  - Client starts at _system call layer_ and moves to _VFS layer_
+  - At the _VFS layer_, a decision will be made to use the _local file system interface_ or the _NFS client_
+  - If _NFS client_ is chosen, it will move on to the _RPC client stub_ which communicates with the _RPC server sub_
+- **Server**:
+  - Continuing from the _RPC server stub_, the call could make it's way to the _NFS server_
+  - The _NFS server_ could communicate with the _VFS layer_ on the server side
+  - From the _VFS layer_, the layout is about the same as the client side
