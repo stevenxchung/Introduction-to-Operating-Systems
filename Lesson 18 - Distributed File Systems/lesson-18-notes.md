@@ -98,3 +98,36 @@
   - Augment with `flush()`/`sync()` API
 - **Immutable files**: never modify, new files created instead
 - **Transactions**: all changes atomic
+
+## File vs Directory Service
+
+- Too many options?
+  - Sharing frequency
+  - Write frequency
+  - Importance of consistent view
+- Optimize for common case
+- Two types of files:
+  - Regular files vs directories
+  - Choose different policies for each
+    - E.g., session-semantics for files, UNIX for directories
+    - E.g., less frequent write-back for files than directories
+
+## Replication and Partitioning
+
+- **Replication**: each machine holds all files
+  - Pros: load balancing, availability, fault tolerance
+  - Cons:
+    - Writes become more complex:
+      - Synchronously to all
+      - Or write to one then propagated to others
+    - Replicas must be reconciled:
+      - E.g., voting
+- **Partitioning**: each machine has subset of files
+  - Pros:
+    - Availability vs single server DFS
+    - Scalability with file system size
+    - Single file writes simpler
+  - Cons:
+    - On failure, lose portion of data
+    - Load balancing harder; if not balanced them hot-spots possible
+- Can combined both techniques, replicate each partition
