@@ -5,3 +5,5 @@ According to the paper _Distributed Shared Memory: Concepts and Systems_, what i
 - Option 1: prefetch pages
 - Option 2: address translation
 - Option 3: triggering invalidations
+
+A: The correct answer is Option 1.
