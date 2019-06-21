@@ -4,3 +4,5 @@ Consider the following sequence of operations (see lecture slides). Is this exec
 
 - Option 1: yes
 - Option 2: no
+
+A: The sequence is neither sequentially consistent or casually consistent.
