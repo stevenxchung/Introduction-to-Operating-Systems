@@ -93,3 +93,32 @@
 
 - Computing: fungible utility
 - Limitations exist: API lock-in, hardware dependence, latency, privacy, security, etc.
+
+## Cloud Deployment Models
+
+- **Public**: third-party customers/tenants
+- **Private**: leverage technology internally
+- **Hybrid (public + private)**: fail over, dealing with spikes, testing
+- **Community**: used by certain type of users
+
+## Cloud Service Models
+
+- **On-premise**:
+  - You must manage all components and services
+- **IaaS (Infrastructure as a Service)**:
+  - You manage components such as applications, data, run-time, middleware, OS
+  - Others manage virtualization, servers, storage, and networking
+- **PaaS (Platform as a Service)**:
+  - You manage components such as applications and data
+  - Others manage run-time, middleware, OS, virtualization, servers, storage, and networking
+- **SaaS (Software as a Service)**:
+  - Opposite of on-premise, others manage all components and services
+
+## Requirements for the Cloud
+
+1. _Fungible_ resources
+2. Elastic, dynamic resource allocation methods
+3. Scale: management at scale, scalable resources allocations
+4. Dealing with failures
+5. Multi-tenancy: performance and isolation
+6. Security
