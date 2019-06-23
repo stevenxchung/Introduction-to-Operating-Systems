@@ -18,3 +18,10 @@ Provide answers to the following:
    - Lower/decrease
    - Higher/increase
    - Same
+
+A: The answers are as follows,
+
+1. The O(1) scheduling algorithm assigns higher priority to threads with a lower priority number (T1)
+2. The O(1) scheduling algorithm dictates that higher priority tasks will have a longer time quantum (T1)
+3. Increase, if T2 uses time quantum without blocking it should have a lower priority next time around
+4. Decrease, if T2 blocks for I/O before time quantum expiration then priority will be higher due to blocking (more I/O intense)
