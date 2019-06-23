@@ -88,7 +88,7 @@
 
 - Useful CPU work can be determined by the following: `total processing time / total time`
 - In general, total scheduling time should be considered overhead, we want most of the CPU time to be spent doing useful work
-- **Timeslice** - time allocated to a process on the CPU
+- **Time-slice** - time allocated to a process on the CPU
 
 ### Inter Process Communication
 
