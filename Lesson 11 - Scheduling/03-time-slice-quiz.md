@@ -12,5 +12,5 @@ What is the **CPU utilization** (%) for a **round robin scheduler** where the **
 
 A: The answers are as follows,
 
-- 1 ms: 91 %
-- 10 ms: 95 %
+- 1 ms: 91%
+- 10 ms: 95%
