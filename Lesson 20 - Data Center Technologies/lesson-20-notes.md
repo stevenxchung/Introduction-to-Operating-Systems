@@ -122,3 +122,23 @@
 4. Dealing with failures
 5. Multi-tenancy: performance and isolation
 6. Security
+
+## Cloud Enabling Technologies
+
+- **Virtualization**:
+  - Resource provisioning (scheduling)
+- **Big data** processing (Hadoop MapReduce, Spark, etc.)
+- Storage:
+  - Distributed front-end (_append only_)
+  - NoSQL, distributed in-memory caches
+- Software-defined networking, storage, data centers, etc.
+- Monitoring: real-time log processing (e.g., AWS CloudWatch)
+
+## The Cloud as a Big Data Engine
+
+- Data storage layer
+- Data processing layer
+- Caching layer
+- Language front-ends (e.g., querying)
+- Analytics libraries (e.g., ML)
+- Continuously streaming data
