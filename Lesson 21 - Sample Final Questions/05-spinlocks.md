@@ -9,3 +9,9 @@ Make a performance comparison using each of the following metrics:
 1. Latency
 2. Delay
 3. Contention
+
+A: The answers are as follows,
+
+1. Latency is the same since operations are identical when lock is free
+2. Delay is worst for dynamic delay since lock could be released during delay
+3. Contention is better for dynamic delay since there exists a delay (does not trigger any additional memory access requests)
