@@ -7,3 +7,5 @@ Assume an inode has the following structure:
 Also assume that each **block pointer element is 4 bytes**.
 
 If a block on the disk is 4 kB, then what is the **maximum file size** that can be supported by this inode structure?
+
+A: About 4 TB when we take into account addresses of first 12 disk blocks and single, double, and triple indirect.
