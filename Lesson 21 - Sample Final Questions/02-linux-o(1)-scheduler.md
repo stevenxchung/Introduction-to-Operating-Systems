@@ -8,8 +8,8 @@ For the next four questions, consider a Linux system with the following assumpti
 
 Provide answers to the following:
 
-1. Which thread has a "higher" priority (will be serviced first)?
-2. Which thread is assigned a longer time quantum?
+1. Which thread has a *higher* priority (will be serviced first)?
+2. Which thread is assigned a **longer time quantum**?
 3. Assume T2 has used its time quantum without blocking. What will happen to the value that represents its priority level when T2 gets scheduled again?
    - Lower/decrease
    - Higher/increase
