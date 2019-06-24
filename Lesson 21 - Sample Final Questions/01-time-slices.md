@@ -11,8 +11,8 @@ On a single CPU system, consider the following workload and conditions:
 
 Now, answer the following questions (for each question, round to the nearest percent):
 
-1. What is the CPU utilization (%) for a round-robin scheduler where the time-slice is 20 ms?
-2. What is the I/O utilization (%) for a round-robin scheduler where the time-slice is 20 ms?
+1. What is the **CPU utilization** (%) for a round-robin scheduler where the time-slice is 20 ms?
+2. What is the **I/O utilization** (%) for a round-robin scheduler where the time-slice is 20 ms?
 
 A: The answers are as follows,
 
