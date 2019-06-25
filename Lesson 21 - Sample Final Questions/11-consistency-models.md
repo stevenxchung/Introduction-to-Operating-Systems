@@ -14,3 +14,8 @@ Answer the following questions:
 
 1. Name all processors (_P1_, _P2_, or _P3_) that observe causally consistent reads.
 2. Is this execution causally consistent?
+
+A: The answers are as follows,
+
+1. Only *P1* and *P2* observe causally consistent reads
+2. No because values before writes cannot be observed
