@@ -11,3 +11,8 @@ Answer the following:
 
 1. Would you use replication or partitioning as a mechanism to ensure high responsiveness of the image store?
 2. If you have 10 server machines at your disposal, and one of them crashes, what's the percentage of requests that the image store will not be able to respond to, if any?
+
+A: The answers are as follows,
+
+1. Partitioning since current data set is extremely large (30 PB)
+2. 10% as requests are evenly distributed
