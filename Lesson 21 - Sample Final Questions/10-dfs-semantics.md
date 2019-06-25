@@ -17,3 +17,9 @@ For each of the following DFS semantics, what will be read -- **the contents of 
 1. UNIX semantics
 2. NFS semantics
 3. Sprite semantics
+
+A: The following answers are valid,
+
+1. `ab` since all updates are instantaneous
+2. `a` since the write at 2 seconds would not be read
+3. `ab` since a check occurs for *P1* most recent value
